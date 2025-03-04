@@ -680,11 +680,12 @@ def ajouter_transaction(numero_compte, description):
 def premier_depot(numero_compte):
     while True:
         montant = input("💰 Faites un premier dépôt : ").strip()
-        if not montant.isdigit():
+        try:
+            montant = float(montant)
+        except ValueError:
             print("❌ Veuillez entrer un montant valide.")
             continue
 
-        montant = int(montant)
         if montant <= 0:
             print("❌ Le montant saisi doit être supérieur à 0")
         else:
@@ -694,12 +695,12 @@ def premier_depot(numero_compte):
 # Fonction pour gérer les transactions (retrait, dépôt)
 def effectuer_transaction(numero_compte, solde, type_operation):
     montant = input(f"💸 Combien voulez-vous {type_operation} ? ").strip()
-
-    if not montant.isdigit():
+    
+    try:
+        montant = float(montant)
+    except ValueError:
         print("❌ Veuillez entrer un montant valide.")
         return solde
-
-    montant = int(montant)
 
     if montant <= 0:
         print("❌ Le montant doit être supérieur à zéro.")
