@@ -1,3 +1,7 @@
-
-2025-03-04 09:08:02 - Premier dépôt : +0 € | Solde restant : 0 €
-2025-03-04 09:09:09 - Premier dépôt : +100 € | Solde restant : 100 €
+2025-03-04 10:45:29 - Compte 8916958544 - Premier dépôt : +10000 € | Solde restant : 10000 €
+2025-03-04 10:56:50 - Compte 8916958544 - Déposer : +10000 € | Solde restant : 20000 €
+2025-03-04 10:57:11 - Compte 8916958544 - Retirer : -2000 € | Solde restant : 18000 €
+2025-03-04 11:44:28 - Compte 8916958544 - Déposer : +2000.5 € | Solde restant : 20000.5 €
+2025-03-04 11:44:58 - Compte 8916958544 - Retirer : -2000.0 € | Solde restant : 18000.5 €
+2025-03-04 11:45:05 - Compte 8916958544 - Déposer : +2000.0 € | Solde restant : 20000.5 €
+2025-03-04 11:45:15 - Compte 8916958544 - Déposer : +0.5 € | Solde restant : 20001.0 €
