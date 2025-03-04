@@ -1,467 +1,10 @@
-# # Exercice 1 : Gestion d'une banque
-
-# transactions = []
-
-# print("🏦 Bienvenue à la Banque Python !")
-
-# # Vérification et création du mot de passe
-# while True:
-#     mot_de_passe = input("🔑 Créez un mot de passe (au moins 8 caractères et un chiffre) : ").strip()
-#     if len(mot_de_passe) < 8 or not any(char.isdigit() for char in mot_de_passe):
-#         print("❌ Mot de passe trop faible. Il doit contenir au moins 8 caractères et un chiffre.")
-#     else:
-#         print("✅ Mot de passe enregistré avec succès !")
-#         break
-
-# # Fonction pour changer de mot de passe
-# def changer_mot_de_passe():
-#     global mot_de_passe
-#     while True:
-#         mot_de_passe_actuel = input("🔑 Entrez votre mot de passe actuel : ").strip()
-#         if mot_de_passe_actuel != mot_de_passe:
-#             print("❌ Mot de passe incorrect. Réessayez.")
-#         else:
-#             nouveau_mot_de_passe = input("🔑 Entrez votre nouveau mot de passe : ").strip()
-#             if len(nouveau_mot_de_passe) < 8 or not any(char.isdigit() for char in nouveau_mot_de_passe):
-#                 print("❌ Mot de passe trop faible. Il doit contenir au moins 8 caractères et un chiffre.")
-#             else:
-#                 mot_de_passe = nouveau_mot_de_passe
-#                 print("✅ Mot de passe modifié avec succès !")
-#                 break
-
-# # Fonction pour demander si l'utilisateur veut continuer
-# def continuer():
-#     while True:
-#         choix = input("🔄 Voulez-vous continuer ? (o/n) : ").strip().lower()
-#         if choix in ["o", "n"]:
-#             return choix == "o"
-#         print("❌ Veuillez entrer 'o' pour oui ou 'n' pour non.")
-
-# # Fonction d'accès avec mot de passe
-# def acces():
-#     essais = 3  # Nombre d'essais autorisés
-#     while essais > 0:
-#         mdp = input("🔑 Entrez votre mot de passe : ").strip()
-#         if mdp == mot_de_passe:
-#             print("✅ Accès autorisé !")
-#             return True
-#         else:
-#             essais -= 1
-#             print(f"❌ Mot de passe incorrect. Essais restants : {essais}")
-    
-#     print("🚫 Accès refusé. Trop d'essais échoués.")
-#     return False
-
-# # Fonction pour enregistrer les transactions dans un fichier texte
-# def enregistrer_transactions():
-#     with open("transactions.txt", "a", encoding="utf-8") as fichier:
-#         for transaction in transactions:
-#             fichier.write(transaction + "\n")
-            
-# # Fonction pour faire un premier dépôt
-# def premier_depot():
-#     solde = input("💰 Faites un premier dépôt (minimum 100 €) : ").strip()
-
-#     if not solde.isdigit():
-#         print("❌ Veuillez entrer un montant valide.")
-#         return 0
-
-#     solde = int(solde)
-    
-#     if solde < 100:
-#         print("❌ Le montant doit être d'au moins 100 €.")
-#         return 0
-#     else:
-#         transaction = f"💰 Premier dépôt : +{solde} € | Solde restant : {solde} €"
-#         transactions.append(transaction)
-#         enregistrer_transactions()
-#         print(f"✅ {transaction}")
-#         return solde
-
-# # Fonction pour retirer de l'argent
-# def retirer_argent(solde):
-#     montant = input("💸 Combien voulez-vous retirer ? ").strip()
-
-#     if not montant.isdigit():
-#         print("❌ Veuillez entrer un montant valide.")
-#         return solde
-
-#     montant = int(montant)
-    
-#     if montant <= 0:
-#         print("❌ Le montant doit être supérieur à zéro.")
-#     elif montant > solde:
-#         print("❌ Vous n'avez pas assez d'argent sur votre compte.")
-#     elif montant > 2000:
-#         print("❌ Retrait limité à 2000 € par transaction.")
-#     else:
-#         solde -= montant
-#         transaction = f"💸 Retrait : -{montant} € | Solde restant : {solde} €"
-#         transactions.append(transaction)
-#         enregistrer_transactions()
-#         print(f"✅ {transaction}")
-    
-#     return solde
-
-# # Fonction pour déposer de l'argent
-# def deposer_argent(solde):
-#     montant = input("💸 Combien voulez-vous déposer ? ").strip()
-
-#     if not montant.isdigit():
-#         print("❌ Veuillez entrer un montant valide.")
-#         return solde
-
-#     montant = int(montant)
-    
-#     if montant <= 0:
-#         print("❌ Le montant doit être supérieur à zéro.")
-#     else:
-#         solde += montant
-#         transaction = f"💰 Dépôt : +{montant} € | Solde restant : {solde} €"
-#         transactions.append(transaction)
-#         enregistrer_transactions()
-#         print(f"✅ {transaction}")
-    
-#     return solde
-
-# # Fonction pour vérifier le solde
-# def verifier_solde(solde):
-#     print(f"💰 Votre solde actuel est de : {solde} €")
-
-# # Fonction pour afficher l'historique des transactions
-# def historique_transactions():
-#     print("\n📜 Historique des transactions :")
-#     try:
-#         with open("transactions.txt", "r", encoding="utf-8") as fichier:
-#             transacs = fichier.readlines()
-#             if not transacs:
-#                 print("Aucune transaction enregistrée.")
-#             else:
-#                 for transaction in transacs:
-#                     print(transaction.strip())
-#     except FileNotFoundError:
-#         print("❌ Aucun historique trouvé.")
-
-# # Fonction pour charger le solde en prenant une valeur par défaut en paramètre
-# def charger_solde(default_solde):
-#     try:
-#         with open("solde.txt", "r", encoding="utf-8") as fichier:
-#             return int(fichier.read().strip())
-#     except FileNotFoundError:
-#         return default_solde
-#     except ValueError:
-#         print("❌ Erreur de lecture du solde. Réinitialisation à la valeur par défaut.")
-#         return default_solde
-
-# # Fonction pour sauvegarder le solde dans un fichier texte
-# def sauvegarder_solde(solde):
-#     with open("solde.txt", "w", encoding="utf-8") as fichier:
-#         fichier.write(str(solde))
-
-# # Chargement du solde avec une valeur par défaut de 0
-# solde = charger_solde(0)
-
-# # Vérification du mot de passe avant d'accéder au menu
-# if not acces():
-#     exit()
-
-# # Vérification si l'utilisateur veut continuer
-# if not continuer():
-#     print("👋 Merci d'avoir utilisé notre banque. Au revoir !")
-#     exit()
-    
-# # Premier dépôt
-# solde = premier_depot()
-# sauvegarder_solde(solde)
-
-# # Menu principal
-# while True:
-#     print("\n📋 Menu")
-#     print("1️⃣ Retirer de l'argent")
-#     print("2️⃣ Déposer de l'argent")
-#     print("3️⃣ Vérifier le solde")
-#     print("4️⃣ Changer de mot de passe")
-#     print("5️⃣ Voir l'historique des transactions")
-#     print("6️⃣ Quitter")
-
-#     choix = input("🔢 Que voulez-vous faire ? ").strip()
-    
-#     if choix == "1":
-#         solde = retirer_argent(solde)
-#         sauvegarder_solde(solde)
-#     elif choix == "2":
-#         solde = deposer_argent(solde)
-#         sauvegarder_solde(solde)
-#     elif choix == "3":
-#         verifier_solde(solde)
-#     elif choix == "4":
-#         changer_mot_de_passe()
-#     elif choix == "5":
-#         historique_transactions()
-#     elif choix == "6":
-#         print("👋 Merci d'avoir utilisé notre banque. Au revoir !")
-#         break
-#     else:
-#         print("❌ Veuillez entrer un choix valide.")
-
-# import random
-# import time
-# from datetime import datetime
-
-# transactions = []
-
-# print("🏦 Bienvenue à la Banque Python !")
-
-# # Vérification et création du mot de passe
-# while True:
-#     mot_de_passe = input("🔑 Créez un mot de passe (au moins 8 caractères et un chiffre) : ").strip()
-#     if len(mot_de_passe) < 8 or not any(char.isdigit() for char in mot_de_passe):
-#         print("❌ Mot de passe trop faible. Il doit contenir au moins 8 caractères et un chiffre.")
-#     else:
-#         print("✅ Mot de passe enregistré avec succès !")
-#         break
-
-# # Fonction pour changer de mot de passe
-# def changer_mot_de_passe():
-#     global mot_de_passe
-#     while True:
-#         mot_de_passe_actuel = input("🔑 Entrez votre mot de passe actuel : ").strip()
-#         if mot_de_passe_actuel != mot_de_passe:
-#             print("❌ Mot de passe incorrect. Réessayez.")
-#         else:
-#             nouveau_mot_de_passe = input("🔑 Entrez votre nouveau mot de passe : ").strip()
-#             if len(nouveau_mot_de_passe) < 8 or not any(char.isdigit() for char in nouveau_mot_de_passe):
-#                 print("❌ Mot de passe trop faible. Il doit contenir au moins 8 caractères et un chiffre.")
-#             else:
-#                 mot_de_passe = nouveau_mot_de_passe
-#                 print("✅ Mot de passe modifié avec succès !")
-#                 break
-
-# # Fonction d'accès avec mot de passe
-# def acces():
-#     essais = 3
-#     while essais > 0:
-#         mdp = input("🔑 Entrez votre mot de passe : ").strip()
-#         if mdp == mot_de_passe:
-#             print("✅ Accès autorisé !")
-#             return True
-#         else:
-#             essais -= 1
-#             print(f"❌ Mot de passe incorrect. Essais restants : {essais}")
-#             if essais == 0:
-#                 print("🚫 Accès refusé. Veuillez patienter 10 secondes avant de réessayer.")
-#                 time.sleep(10)
-#                 essais = 3  # Réinitialisation des essais
-
-# # Compte utilisateur
-
-# # Fonction pour créer un compte utilisateur
-# def creer_compte():
-#     nom = input("👤 Entrez votre nom : ").strip()
-#     if not nom:
-#         print("❌ Nom invalide.")
-#         return
-#     comptes = charher_comptes()
-#     if nom in comptes:
-#         print("❌ Ce nom existe déjà.")
-#     else:
-#         comptes[nom] = 0
-#         sauvegarder_comptes(comptes)
-#         print("✅ Compte créé avec succès !")
-
-# # Fonction pour sauvegarder les comptes utilisateurs
-# def sauvegarder_comptes(comptes):
-#     with open("comptes.txt", "w", encoding="utf-8") as fichier:
-#         for nom, solde in comptes.items():
-#             fichier.write(f"{nom}:{solde}\n") 
-
-# # Fonction pour charger les comptes utilisateurs
-# def charger_comptes():
-#     comptes = {}
-#     try: 
-#         with open("comptes.txt", "r", encoding="utf-8") as fichier:
-#             lignes = fichier.readlines()
-#             for ligne in lignes:
-#                 nom, solde = ligne.strip().split(":")
-#                 comptes[nom] = int(solde)
-#     except FileNotFoundError:
-#             pass
-#     except ValueError:
-#             print("❌ Erreur de lecture des comptes.")
-#     return comptes
-
-# # Fonction pour choisir un compte utilisateur
-# def choisir_compte():
-#     comptes = charger_comptes()
-#     if not comptes:
-#         print("❌ Aucun compte trouvé.")
-#         return None
-#     print("\n👤 Comptes utilisateurs :")
-#     for i, nom in enumerate(comptes.keys(), 1):
-#         print(f"{i}. {nom}")
-#     while True:
-#         choix = input("🔢 Choisissez un compte : ").strip()
-#         if not choix.isdigit():
-#             print("❌ Veuillez entrer un nombre.")
-#             continue
-#         choix = int(choix)
-#         if choix < 1 or choix > len(comptes):
-#             print("❌ Choix invalide.")
-#         else:
-#             nom = list(comptes.keys())[choix - 1]
-#             return nom
-
-# # Fonction pour enregistrer les transactions dans un fichier texte
-# def enregistrer_transactions():
-#     with open("transactions.txt", "a", encoding="utf-8") as fichier:
-#         for transaction in transactions:
-#             fichier.write(transaction + "\n")
-
-# # Fonction pour ajouter une transaction avec la date et l'heure
-# def ajouter_transaction(description):
-#     maintenant = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#     transaction = f"{maintenant} - {description}"
-#     transactions.append(transaction)
-#     enregistrer_transactions()
-#     print(f"✅ {transaction}")
-
-# # Fonction pour faire un premier dépôt
-# def premier_depot():
-#     while True:
-#         solde = input("💰 Faites un premier dépôt : ").strip()
-#         if not solde.isdigit():
-#             print("❌ Veuillez entrer un montant valide.")
-#             continue
-
-#         solde = int(solde)
-#         if solde <= 0:
-#             print("❌ Le montant saisie doit etre superieur a 0")
-#         else:
-#             ajouter_transaction(f"Premier dépôt : +{solde} € | Solde restant : {solde} €")
-#             return solde
-
-# # Fonction pour gérer les transactions (retrait, dépôt)
-# def effectuer_transaction(solde, type_operation):
-#     montant = input(f"💸 Combien voulez-vous {type_operation} ? ").strip()
-
-#     if not montant.isdigit():
-#         print("❌ Veuillez entrer un montant valide.")
-#         return solde
-
-#     montant = int(montant)
-
-#     if montant <= 0:
-#         print("❌ Le montant doit être supérieur à zéro.")
-#     elif type_operation == "retirer" and montant > solde:
-#         print("❌ Vous n'avez pas assez d'argent sur votre compte.")
-#     elif type_operation == "retirer" and montant > 2000:
-#         print("❌ Retrait limité à 2000 € par transaction.")
-#     else:
-#         solde = solde - montant if type_operation == "retirer" else solde + montant
-#         signe = "-" if type_operation == "retirer" else "+"
-#         ajouter_transaction(f"{type_operation.capitalize()} : {signe}{montant} € | Solde restant : {solde} €")
-
-#     return solde
-
-# # Fonction pour vérifier le solde
-# def verifier_solde(solde):
-#     print(f"💰 Votre solde actuel est de : {solde} €")
-
-# # Fonction pour afficher l'historique des transactions
-# def historique_transactions():
-#     print("\n📜 Historique des transactions :")
-#     try:
-#         with open("transactions.txt", "r", encoding="utf-8") as fichier:
-#             transactions = fichier.readlines()
-#             if not transactions:
-#                 print("Aucune transaction enregistrée.")
-#             else:
-#                 for transaction in transactions:
-#                     print(transaction.strip())
-#     except FileNotFoundError:
-#         print("❌ Aucun historique trouvé.")
-
-# # Fonction pour charger et sauvegarder le solde
-# def charger_solde(default_solde):
-#     try:
-#         with open("solde.txt", "r", encoding="utf-8") as fichier:
-#             return int(fichier.read().strip())
-#     except FileNotFoundError:
-#         return default_solde
-#     except ValueError:
-#         print("❌ Erreur de lecture du solde. Réinitialisation à la valeur par défaut.")
-#         return default_solde
-
-# def sauvegarder_solde(solde):
-#     with open("solde.txt", "w", encoding="utf-8") as fichier:
-#         fichier.write(str(solde))
-
-# # Chargement du solde
-# solde = charger_solde(0)
-
-# # Vérification du mot de passe
-# if not acces():
-#     exit()
-
-# # Création d'un compte utilisateur
-# creer_compte()
-
-# # Choix du compte utilisateur
-# nom_utilisateur = choisir_compte()
-
-# if not nom_utilisateur:
-#     print("❌ Aucun compte utilisateur sélectionné.")
-#     exit()
-
-# # sauvegarde de compte utilisateur
-# sauvegarder_comptes()
-
-# # Charger les comptes utilisateurs
-# comptes = charger_comptes()
-
-
-# # Premier dépôt uniquement si le solde est nul
-# if solde == 0:
-#     solde = premier_depot()
-#     sauvegarder_solde(solde)
-
-# # Menu principal
-# while True:
-#     print("\n📋 Menu")
-#     print("1️⃣ Retirer de l'argent")
-#     print("2️⃣ Déposer de l'argent")
-#     print("3️⃣ Vérifier le solde")
-#     print("4️⃣ Changer de mot de passe")
-#     print("5️⃣ Voir l'historique des transactions")
-#     print("6️⃣ Quitter")
-
-#     choix = input("🔢 Que voulez-vous faire ? ").strip()
-
-#     if choix == "1":
-#         solde = effectuer_transaction(solde, "retirer")
-#         sauvegarder_solde(solde)
-#     elif choix == "2":
-#         solde = effectuer_transaction(solde, "déposer")
-#         sauvegarder_solde(solde)
-#     elif choix == "3":
-#         verifier_solde(solde)
-#     elif choix == "4":
-#         changer_mot_de_passe()
-#     elif choix == "5":
-#         historique_transactions()
-#     elif choix == "6":
-#         print("👋 Merci d'avoir utilisé notre banque. Au revoir !")
-#         break
-#     else:
-#         print("❌ Veuillez entrer un choix valide.")
-
 import random
 import time
 from datetime import datetime
 import os
 import hashlib
 import uuid
-
+import getpass
 transactions = []
 
 print("🏦 Bienvenue à la Banque Python !")
@@ -484,84 +27,81 @@ def verifier_mot_de_passe(mot_de_passe, hash_stocke):
 def generer_numero_compte():
     return ''.join(random.choice('0123456789') for _ in range(10))
 
-# Fonction pour charger les comptes utilisateurs
+# Fonction pour charger les comptes utilisateurs.
+# Le fichier "comptes.txt" utilise désormais le format suivant :
+# nom:prenom:date_naissance:telephone:adresse:numero_compte:solde
 def charger_comptes():
     comptes = {}
-    try: 
+    try:
         with open("comptes.txt", "r", encoding="utf-8") as fichier:
             lignes = fichier.readlines()
             for ligne in lignes:
                 parts = ligne.strip().split(":")
-                if len(parts) == 3:
-                    nom, numero_compte, solde = parts
-                    comptes[numero_compte] = {"nom": nom, "solde": int(solde)}
+                if len(parts) == 7:
+                    nom, prenom, date_naissance, telephone, adresse, numero_compte, solde = parts
+                    comptes[numero_compte] = {
+                        "nom": nom,
+                        "prenom": prenom,
+                        "date_naissance": date_naissance,
+                        "telephone": telephone,
+                        "adresse": adresse,
+                        "solde": float(solde)
+                    }
     except FileNotFoundError:
-            pass
+        pass
     except ValueError:
-            print("❌ Erreur de lecture des comptes.")
+        print("❌ Erreur de lecture des comptes.")
     return comptes
 
 # Fonction pour sauvegarder les comptes utilisateurs
 def sauvegarder_comptes(comptes):
     with open("comptes.txt", "w", encoding="utf-8") as fichier:
         for numero_compte, details in comptes.items():
-            fichier.write(f"{details['nom']}:{numero_compte}:{details['solde']}\n") 
+            fichier.write(f"{details['nom']}:{details['prenom']}:{details['date_naissance']}:{details['telephone']}:{details['adresse']}:{numero_compte}:{details['solde']}\n")
 
-# Fonction pour charger les associations utilisateur-numéro de compte
-def charger_associations():
-    associations = {}
-    try: 
-        with open("associations.txt", "r", encoding="utf-8") as fichier:
-            lignes = fichier.readlines()
-            for ligne in lignes:
-                nom, numero_compte = ligne.strip().split(":")
-                associations[nom] = numero_compte
-    except FileNotFoundError:
-            pass
-    except ValueError:
-            print("❌ Erreur de lecture des associations.")
-    return associations
-
-# Fonction pour sauvegarder les associations utilisateur-numéro de compte
-def sauvegarder_associations(associations):
-    with open("associations.txt", "w", encoding="utf-8") as fichier:
-        for nom, numero_compte in associations.items():
-            fichier.write(f"{nom}:{numero_compte}\n") 
-
-# Fonction pour créer un compte utilisateur
+# Fonction pour créer un compte utilisateur  
 def creer_compte():
-    nom = input("👤 Entrez votre nom : ").strip()
-    prenom = input("👤 Entrez votre prénom : ").strip()
-    if not (nom and prenom):
-        print("❌ Nom invalide.")
+    nom = input("👤 Entrez votre nom : ").strip().upper()
+    prenom = input("👤 Entrez votre prénom : ").strip().capitalize()
+    date_naissance = input("📅 Entrez votre date de naissance (JJ/MM/AAAA) : ").strip()
+    telephone = input("📞 Entrez votre numéro de téléphone : ").strip()
+    adresse = input("🏠 Entrez votre adresse : ").strip()
+    if not (nom and prenom and date_naissance and telephone and adresse):
+        print("❌ Veuillez remplir tous les champs.")
         return None, None
     
-    associations = charger_associations()
     comptes = charger_comptes()
-    
-    if nom in associations:
-        print("❌ Ce nom existe déjà.")
-        return None, None
+    # Vérifier si un compte avec ce numéro de téléphone existe déjà
+    for compte in comptes.values():
+        if compte["telephone"] == telephone:
+            print("❌ Un compte avec ce numéro de téléphone existe déjà.")
+            return None, None
     
     # Création du mot de passe
     while True:
-        mot_de_passe = input("🔑 Créez un mot de passe (au moins 8 caractères et un chiffre) : ").strip()
+        mot_de_passe = getpass.getpass("🔑 Créez un mot de passe (au moins 8 caractères et un chiffre) : ").strip()
         if len(mot_de_passe) < 8 or not any(char.isdigit() for char in mot_de_passe):
             print("❌ Mot de passe trop faible. Il doit contenir au moins 8 caractères et un chiffre.")
         else:
             print("✅ Mot de passe enregistré avec succès !")
             break
-    
+
     # Génération d'un numéro de compte unique
     numero_compte = generer_numero_compte()
-    while any(numero_compte == nc for nc in comptes):
+    while numero_compte in comptes:
         numero_compte = generer_numero_compte()
     
-    # Enregistrement du compte et de l'association
-    comptes[numero_compte] = {"nom": nom, "prénom": prenom, "solde": 0}
-    associations[nom, prenom] = numero_compte
+    # Enregistrement du compte dans le dictionnaire comptes
+    comptes[numero_compte] = {
+        "nom": nom,
+        "prenom": prenom,
+        "date_naissance": date_naissance,
+        "telephone": telephone,
+        "adresse": adresse,
+        "solde": 0
+    }
     
-    # Sauvegarde des mots de passe de manière sécurisée (hachés)
+    # Hacher le mot de passe et sauvegarder dans passwords_secure.txt
     mot_de_passe_hache = hacher_mot_de_passe(mot_de_passe)
     try:
         with open("passwords_secure.txt", "a", encoding="utf-8") as fichier:
@@ -571,7 +111,6 @@ def creer_compte():
             fichier.write(f"{numero_compte}:{mot_de_passe_hache}\n")
     
     sauvegarder_comptes(comptes)
-    sauvegarder_associations(associations)
     
     print(f"✅ Compte créé avec succès ! Votre numéro de compte est : {numero_compte}")
     print("⚠️ IMPORTANT: Notez bien votre numéro de compte, vous en aurez besoin pour vous connecter.")
@@ -583,7 +122,7 @@ def verifier_credentials(numero_compte, mot_de_passe):
     try:
         with open("passwords_secure.txt", "r", encoding="utf-8") as fichier:
             for ligne in fichier:
-                parts = ligne.strip().split(":", 1)  # Séparer en deux parties uniquement
+                parts = ligne.strip().split(":", 1)
                 if len(parts) == 2:
                     nc, mdp_hache = parts
                     if nc == numero_compte and verifier_mot_de_passe(mot_de_passe, mdp_hache):
@@ -602,13 +141,13 @@ def changer_mot_de_passe(numero_compte):
         mots_de_passe = {}
         with open("passwords_secure.txt", "r", encoding="utf-8") as fichier:
             for ligne in fichier:
-                parts = ligne.strip().split(":", 1)  # Séparer en deux parties uniquement
+                parts = ligne.strip().split(":", 1)
                 if len(parts) == 2:
                     nc, mdp_hache = parts
                     mots_de_passe[nc] = mdp_hache
         
         # Demander l'ancien mot de passe
-        ancien_mdp = input("🔑 Entrez votre mot de passe actuel : ").strip()
+        ancien_mdp = getpass.getpass("🔑 Entrez votre mot de passe actuel : ").strip()
         if not verifier_credentials(numero_compte, ancien_mdp):
             print("❌ Mot de passe incorrect.")
             return False
@@ -665,7 +204,6 @@ def enregistrer_transactions():
     with open("transactions.txt", "a", encoding="utf-8") as fichier:
         for transaction in transactions:
             fichier.write(transaction + "\n")
-    # Vider la liste des transactions après l'enregistrement
     transactions.clear()
 
 # Fonction pour ajouter une transaction avec la date et l'heure
@@ -695,7 +233,6 @@ def premier_depot(numero_compte):
 # Fonction pour gérer les transactions (retrait, dépôt)
 def effectuer_transaction(numero_compte, solde, type_operation):
     montant = input(f"💸 Combien voulez-vous {type_operation} ? ").strip()
-    
     try:
         montant = float(montant)
     except ValueError:
@@ -725,15 +262,12 @@ def historique_transactions(numero_compte):
     try:
         with open("transactions.txt", "r", encoding="utf-8") as fichier:
             transactions_list = fichier.readlines()
-            if not transactions_list:
-                print("Aucune transaction enregistrée.")
+            compte_transactions = [t for t in transactions_list if f"Compte {numero_compte}" in t]
+            if not compte_transactions:
+                print("Aucune transaction enregistrée pour ce compte.")
             else:
-                compte_transactions = [t for t in transactions_list if f"Compte {numero_compte}" in t]
-                if not compte_transactions:
-                    print("Aucune transaction enregistrée pour ce compte.")
-                else:
-                    for transaction in compte_transactions:
-                        print(transaction.strip())
+                for transaction in compte_transactions:
+                    print(transaction.strip())
     except FileNotFoundError:
         print("❌ Aucun historique trouvé.")
 
@@ -747,10 +281,10 @@ def recuperer_mot_de_passe():
         return
     
     nom = comptes[numero_compte]["nom"]
-    print(f"👤 Le compte appartient à : {nom}")
+    prenom = comptes[numero_compte]["prenom"]
+    print(f"👤 Le compte appartient à : {nom} {prenom}")
     print("🔐 Création d'un nouveau mot de passe requis.")
     
-    # Création d'un nouveau mot de passe
     while True:
         nouveau_mdp = input("🔑 Créez un nouveau mot de passe (au moins 8 caractères et un chiffre) : ").strip()
         if len(nouveau_mdp) < 8 or not any(char.isdigit() for char in nouveau_mdp):
@@ -770,7 +304,6 @@ def recuperer_mot_de_passe():
     except FileNotFoundError:
         pass
     
-    # Hacher et sauvegarder le nouveau mot de passe
     nouveau_mdp_hache = hacher_mot_de_passe(nouveau_mdp)
     mots_de_passe[numero_compte] = nouveau_mdp_hache
     
@@ -814,10 +347,9 @@ while True:
             print("❌ Ce compte n'existe pas ou a été supprimé.")
             continue
         
-        nom_utilisateur = comptes[numero_compte]["nom"]
-        solde = comptes[numero_compte]["solde"]
-        
-        print(f"👤 Bienvenue, {nom_utilisateur} !")
+        user_details = comptes[numero_compte]
+        print(f"👤 Bienvenue, {user_details['nom']} {user_details['prenom']} !")
+        solde = user_details["solde"]
         
         # Premier dépôt uniquement si le solde est nul
         if solde == 0:
